@@ -41,7 +41,12 @@ class ChartMogul(object):
             '{:s}metrics/mrr?start-date={:s}&end-date={:s}&interval={:s}'.format(self.url, start_date.isoformat(), end_date.isoformat(), interval),
             method = 'GET'
         )
-        res = urllib.request.urlopen(req)
+        try:
+            res = urllib.request.urlopen(req)
+        except HTTPError as e:
+            print('Error code: ', e.code)
+        except URLError as e:
+            print('Reason: ', e.reason)
         jres = json.loads(res.read().decode('utf-8'))
 
         mrr_contraction = jres['entries'][0]['mrr-contraction']/100
@@ -65,7 +70,12 @@ class ChartMogul(object):
             '{:s}metrics/all?start-date={:s}&end-date={:s}&interval={:s}'.format(self.url, start_date.isoformat(), end_date.isoformat(), interval),
             method = 'GET'
         )
-        res = urllib.request.urlopen(req)
+        try:
+            res = urllib.request.urlopen(req)
+        except HTTPError as e:
+            print('Error code: ', e.code)
+        except URLError as e:
+            print('Reason: ', e.reason)
         jres = json.loads(res.read().decode('utf-8'))
 
         customers = jres['entries'][0]['customers']
